@@ -1,10 +1,6 @@
-Certainly! Here's a README for your `date_spacy` package:
-
----
-
 # Date spaCy
 
-![date spacy logo](images/date_spacy_logo.png)
+![date spacy logo](images/date-spacy-logo.png)
 
 Date spaCy is a collection of custom spaCy pipeline component that enables you to easily identify date entities in a text and fetch the parsed date values using spaCy's token extensions. It uses RegEx to find dates and then uses the [dateparser](https://dateparser.readthedocs.io/en/latest/) library to convert those dates into structured datetime data. One current limitation is that if no year is given, it presumes it is the current year. The `dateparser` output is stored in a custom entity extension: `._.date`.
 
