@@ -1,6 +1,13 @@
+[![GitHub Stars](https://img.shields.io/github/stars/wjbmattingly/date-spacy?style=social)](https://github.com/wjbmattingly/date-spacy)
+[![PyPi Version](https://img.shields.io/pypi/v/date-spacy)](https://pypi.org/project/date-spacy/0.0.1/)
+[![PyPi Downloads](https://img.shields.io/pypi/dm/date-spacy)](https://pypi.org/project/date-spacy/0.0.1/)
+
+
+
+
 # Date spaCy
 
-![date spacy logo](images/date-spacy-logo.png)
+![date spacy logo](https://github.com/wjbmattingly/date-spacy/blob/main/images/date-spacy-logo.png?raw=true)
 
 Date spaCy is a collection of custom spaCy pipeline component that enables you to easily identify date entities in a text and fetch the parsed date values using spaCy's token extensions. It uses RegEx to find dates and then uses the [dateparser](https://dateparser.readthedocs.io/en/latest/) library to convert those dates into structured datetime data. One current limitation is that if no year is given, it presumes it is the current year. The `dateparser` output is stored in a custom entity extension: `._.date`.
 

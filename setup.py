@@ -12,7 +12,7 @@ setup(
     description="A spaCy extension for enhanced date and number entity recognition and extraction as structured data.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/wjbmattingly/date_spacy",
+    url="https://github.com/wjbmattingly/date-spacy",
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
