@@ -4,6 +4,17 @@ from spacy.language import Language
 from spacy.util import filter_spans
 import dateparser
 
+ordinal_to_number = {
+    "first": "1", "second": "2", "third": "3", "fourth": "4", "fifth": "5",
+    "sixth": "6", "seventh": "7", "eighth": "8", "ninth": "9", "tenth": "10",
+    "eleventh": "11", "twelfth": "12", "thirteenth": "13", "fourteenth": "14",
+    "fifteenth": "15", "sixteenth": "16", "seventeenth": "17", "eighteenth": "18",
+    "nineteenth": "19", "twentieth": "20", "twenty-first": "21", "twenty-second": "22",
+    "twenty-third": "23", "twenty-fourth": "24", "twenty-fifth": "25", "twenty-sixth": "26",
+    "twenty-seventh": "27", "twenty-eighth": "28", "twenty-ninth": "29", "thirtieth": "30", 
+    "thirty-first": "31"
+}
+
 
 @Language.component("find_dates")
 def find_dates(doc):
@@ -85,11 +96,31 @@ def find_dates(doc):
                 \d{4}                   # Year
             )?
         )
+        |
+        (?:
+            """ + ordinal_pattern + """
+            \s+
+            of
+            \s+
+            (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*  # Month name
+            (?:                         # Year is optional
+                \s+
+                \d{4}                   # Year
+            )?
+        )
+        |
+        # Month Ordinal
+        (?:
+            (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*  # Month name
+            \s+
+            """ + ordinal_pattern + """
+            (?:                         # Year is optional
+                \s+
+                \d{4}                   # Year
+            )?
+        )
     """
-
-    
     matches = list(re.finditer(date_pattern, doc.text, re.VERBOSE))
-    
     new_ents = []
     for match in matches:
         start_char, end_char = match.span()
@@ -108,8 +139,19 @@ def find_dates(doc):
                 ent = Span(doc, start_token, end_token + 1, label="DATE")
                 ent._.date = parsed_date
                 new_ents.append(ent)
+            else:
+                # Replace each ordinal in hit_text with its numeric representation
+                for ordinal, number in ordinal_to_number.items():
+                    hit_text = hit_text.replace(ordinal, number)
 
+                # Remove the word "of" from hit_text
+                new_date = hit_text.replace(" of ", " ")
+
+                parsed_date = dateparser.parse(new_date)
+                ent = Span(doc, start_token, end_token + 1, label="DATE")
+                ent._.date = parsed_date
+                new_ents.append(ent)
     # Combine the new entities with existing entities, ensuring no overlap
-    doc.ents = filter_spans(list(doc.ents) + new_ents)
+    doc.ents = list(doc.ents) + new_ents
     
     return doc

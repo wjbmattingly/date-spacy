@@ -40,7 +40,9 @@ nlp.add_pipe('find_dates')
 After adding the component, you can process text as usual:
 
 ```python
-doc = nlp("The event is scheduled for 25th August 2023.")
+doc = nlp("""The event is scheduled for 25th August 2023.
+          We also have a meeting on 10 September and another one on the twelfth of October and a
+          final one on January fourth.""")
 ```
 
 ### Accessing the Parsed Dates
@@ -57,4 +59,7 @@ This will output:
 
 ```
 Text: 25th August 2023 -> Parsed Date: 2023-08-25 00:00:00
+Text: 10 September -> Parsed Date: 2023-09-10 00:00:00
+Text: twelfth of October -> Parsed Date: 2023-10-12 00:00:00
+Text: January fourth -> Parsed Date: 2023-01-04 00:00:00
 ```
