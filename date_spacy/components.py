@@ -88,7 +88,7 @@ def find_dates(doc):
         |
         # Ordinal-Day-Month-Year
         (?:
-            """ + ordinal_pattern + """
+            """ + ordinal_pattern + r"""
             \s+
             (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* # Month name
             (?:                         # Year is optional
@@ -98,7 +98,7 @@ def find_dates(doc):
         )
         |
         (?:
-            """ + ordinal_pattern + """
+            """ + ordinal_pattern + r"""
             \s+
             of
             \s+
@@ -113,7 +113,7 @@ def find_dates(doc):
         (?:
             (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*  # Month name
             \s+
-            """ + ordinal_pattern + """
+            """ + ordinal_pattern + r"""
             (?:                         # Year is optional
                 \s+
                 \d{4}                   # Year
