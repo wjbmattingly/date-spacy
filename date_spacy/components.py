@@ -141,16 +141,20 @@ def find_dates(doc):
                 new_ents.append(ent)
             else:
                 # Replace each ordinal in hit_text with its numeric representation
-                for ordinal, number in ordinal_to_number.items():
-                    hit_text = hit_text.replace(ordinal, number)
+                hit_text = re.sub(
+                    ordinal_pattern,
+                    lambda ordinal: ordinal_to_number[ordinal.group()],
+                    hit_text,
+                )
 
                 # Remove the word "of" from hit_text
                 new_date = hit_text.replace(" of ", " ")
 
                 parsed_date = dateparser.parse(new_date)
-                ent = Span(doc, start_token, end_token + 1, label="DATE")
-                ent._.date = parsed_date
-                new_ents.append(ent)
+                if parsed_date:
+                    ent = Span(doc, start_token, end_token + 1, label="DATE")
+                    ent._.date = parsed_date
+                    new_ents.append(ent)
     # Combine the new entities with existing entities, ensuring no overlap
     doc.ents = list(doc.ents) + new_ents
     
